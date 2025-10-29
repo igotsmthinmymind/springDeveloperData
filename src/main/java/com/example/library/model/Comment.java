@@ -4,15 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "comments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String text;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
+    private Book book;
 }
