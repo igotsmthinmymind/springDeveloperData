@@ -1,68 +1,14 @@
 package com.example.library.repository;
 
 import com.example.library.model.Book;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
-@Repository
-public class BookRepository {
+public interface BookRepository {
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    List<Book> findAll();
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    void save(Book book);
 
-    public BookRepository(NamedParameterJdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
-
-    public List<Book> findAll() {
-        return jdbcTemplate.query(
-                "SELECT id, title, author_id, genre_id FROM books",
-                (rs, rowNum) -> new Book(
-                        rs.getLong("id"),
-                        rs.getString("title"),
-                        rs.getLong("author_id"),
-                        rs.getLong("genre_id")
-                )
-        );
-    }
-
-    public void save(Book book) {
-        if (book.getId() == null) {
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-
-            MapSqlParameterSource parameters = new MapSqlParameterSource()
-                    .addValue("title", book.getTitle())
-                    .addValue("authorId", book.getAuthorId())
-                    .addValue("genreId", book.getGenreId());
-
-            namedParameterJdbcTemplate.update(
-                    "INSERT INTO books (title, author_id, genre_id) VALUES (:title, :authorId, :genreId)",
-                    parameters,
-                    keyHolder,
-                    new String[]{"id"}
-            );
-        } else {
-            namedParameterJdbcTemplate.update(
-                    "UPDATE books SET title = :title, author_id = :authorId, genre_id = :genreId WHERE id = :id",
-                    Map.of(
-                            "id", book.getId(),
-                            "title", book.getTitle(),
-                            "authorId", book.getAuthorId(),
-                            "genreId", book.getGenreId()
-                    )
-            );
-        }
-    }
-
-    public void deleteById(Long id) {
-        jdbcTemplate.update("DELETE FROM books WHERE id = :id", Map.of("id", id));
-    }
+    void deleteById(Long id);
 }
