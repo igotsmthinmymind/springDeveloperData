@@ -6,7 +6,7 @@ import com.example.library.model.Genre;
 import com.example.library.repository.AuthorRepository;
 import com.example.library.repository.BookRepository;
 import com.example.library.repository.GenreRepository;
-import com.example.library.service.BookService;
+import com.example.library.service.BookServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -29,7 +29,7 @@ class BookServiceTest {
     private GenreRepository genreRepository;
 
     @InjectMocks
-    private BookService bookService;
+    private BookServiceImpl bookService;
 
     private Author author;
 

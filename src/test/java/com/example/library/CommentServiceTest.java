@@ -4,7 +4,7 @@ import com.example.library.model.Book;
 import com.example.library.model.Comment;
 import com.example.library.repository.BookRepository;
 import com.example.library.repository.CommentRepository;
-import com.example.library.service.CommentService;
+import com.example.library.service.CommentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -24,7 +24,7 @@ class CommentServiceTest {
     private BookRepository bookRepository;
 
     @InjectMocks
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     private Book book;
     private Comment comment;

@@ -1,22 +1,24 @@
 package com.example.library.shell;
 
+import com.example.library.model.Book;
 import com.example.library.model.Comment;
-import com.example.library.service.BookService;
-import com.example.library.service.CommentService;
+import com.example.library.service.BookServiceImpl;
+import com.example.library.service.CommentServiceImpl;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import java.util.List;
+import java.util.Optional;
 
 @ShellComponent
 public class LibraryCommands {
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
-    private final CommentService commentService;
+    private final CommentServiceImpl commentService;
 
-    public LibraryCommands(BookService bookService, CommentService commentService) {
+    public LibraryCommands(BookServiceImpl bookService, CommentServiceImpl commentService) {
         this.bookService = bookService;
         this.commentService = commentService;
     }
@@ -80,5 +82,33 @@ public class LibraryCommands {
     public void deleteComment(@ShellOption Long commentId) {
         commentService.deleteComment(commentId);
         System.out.println("Comment deleted with id: " + commentId);
+    }
+
+    @ShellMethod
+    public void getBookById(@ShellOption Long id) {
+        Optional<Book> optionalBook = bookService.getBookById(id);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            System.out.println(book.getId() + ": " + book.getTitle() +
+                    " (Author ID: " + book.getAuthor() +
+                    ", Genre ID: " + book.getGenre() + ")");
+        } else {
+            System.out.println("Book with ID " + id + " not found.");
+        }
+    }
+
+    @ShellMethod
+    public void getCommentById(@ShellOption Long id) {
+        Optional<Comment> optionalComment = commentService.getCommentById(id);
+        if (optionalComment.isPresent()) {
+            Comment comment = optionalComment.get();
+            System.out.println(
+                    "Comment ID: " + comment.getId() +
+                            "\nText: " + comment.getText() +
+                            "\nBook ID: " + comment.getBook()
+            );
+        } else {
+            System.out.println("Comment with ID " + id + " not found.");
+        }
     }
 }
