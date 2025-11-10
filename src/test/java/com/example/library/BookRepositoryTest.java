@@ -2,6 +2,7 @@ package com.example.library;
 
 import com.example.library.model.Book;
 import com.example.library.repository.BookRepository;
+import com.example.library.repository.BookRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJdbcTest
-@Import(BookRepository.class)
+@Import(BookRepositoryImpl.class)
 class BookRepositoryTest {
 
     @Autowired
