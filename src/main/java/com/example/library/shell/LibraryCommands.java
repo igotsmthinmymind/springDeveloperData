@@ -89,9 +89,7 @@ public class LibraryCommands {
         Optional<Book> optionalBook = bookService.getBookById(id);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            System.out.println(book.getId() + ": " + book.getTitle() +
-                    " (Author ID: " + book.getAuthor() +
-                    ", Genre ID: " + book.getGenre() + ")");
+            System.out.println(book.getId() + ": " + book.getTitle());
         } else {
             System.out.println("Book with ID " + id + " not found.");
         }
@@ -103,10 +101,7 @@ public class LibraryCommands {
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
             System.out.println(
-                    "Comment ID: " + comment.getId() +
-                            "\nText: " + comment.getText() +
-                            "\nBook ID: " + comment.getBook()
-            );
+                    "Comment ID: " + comment.getId());
         } else {
             System.out.println("Comment with ID " + id + " not found.");
         }
