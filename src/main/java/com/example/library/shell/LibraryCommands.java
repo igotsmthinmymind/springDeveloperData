@@ -1,6 +1,7 @@
 package com.example.library.shell;
 
-import com.example.library.service.BookService;
+import com.example.library.model.Book;
+import com.example.library.service.BookServiceImpl;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -8,9 +9,9 @@ import org.springframework.shell.standard.ShellOption;
 @ShellComponent
 public class LibraryCommands {
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
-    public LibraryCommands(BookService bookService) {
+    public LibraryCommands(BookServiceImpl bookService) {
         this.bookService = bookService;
     }
 
@@ -44,5 +45,17 @@ public class LibraryCommands {
     public void deleteBook(@ShellOption Long id) {
         bookService.deleteBook(id);
         System.out.println("Book deleted.");
+    }
+
+    @ShellMethod
+    public void getBookById(@ShellOption Long id) {
+        Book book = bookService.getById(id);
+        if (book != null) {
+            System.out.println(book.getId() + ": " + book.getTitle() +
+                    " (Author ID: " + book.getAuthorId() +
+                    ", Genre ID: " + book.getGenreId() + ")");
+        } else {
+            System.out.println("Book with ID " + id + " not found.");
+        }
     }
 }

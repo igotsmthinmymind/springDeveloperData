@@ -75,4 +75,18 @@ class BookRepositoryTest {
         List<Book> books = bookRepository.findAll();
         assertThat(books).hasSize(2);
     }
+
+    @Test
+    void getById_WithExistingId_ShouldReturnBook() {
+        Book book = bookRepository.getById(1L);
+        assertThat(book).isNotNull();
+        assertThat(book.getId()).isEqualTo(1L);
+        assertThat(book.getTitle()).isEqualTo("War and Peace");
+    }
+
+    @Test
+    void getById_WithNonExistingId_ShouldReturnNull() {
+        Book book = bookRepository.getById(999L);
+        assertThat(book).isNull();
+    }
 }

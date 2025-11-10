@@ -65,4 +65,24 @@ public class BookRepositoryImpl implements BookRepository {
     public void deleteById(Long id) {
         jdbcTemplate.update("DELETE FROM books WHERE id = :id", Map.of("id", id));
     }
+
+    public Book getById(Long id) {
+        if (id == null) {
+            return null;
+        }
+
+        String sql = "SELECT id, title, author_id, genre_id FROM books WHERE id = :id";
+        List<Book> results = jdbcTemplate.query(
+                sql,
+                Map.of("id", id),
+                (rs, rowNum) -> new Book(
+                        rs.getLong("id"),
+                        rs.getString("title"),
+                        rs.getLong("author_id"),
+                        rs.getLong("genre_id")
+                )
+        );
+
+        return results.isEmpty() ? null : results.get(0);
+    }
 }
